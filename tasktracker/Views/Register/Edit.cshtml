@@ -1,0 +1,100 @@
+﻿@model tasktracker.Models.StoryTable
+@using (Html.BeginForm())
+{
+    <div class="container">
+        <div class="form-group">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Заявка</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="col-lg-12">
+                                @Html.DisplayFor(x => x.Story, new { @class = "form-control" })
+                            </div>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Комментарий:</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div>
+                                @Html.TextArea("comment", new { @class = "form-control", style = "width: 250px", @rows = 5 })
+                            </div>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="form-group">
+            <label>Статус:</label>
+
+            @if (@Model.Status.Equals("Открыта"))
+            {
+                <p>
+                    @Html.DropDownListFor(x => x.Status, new[] {
+                        new SelectListItem() {Text = "Открыта",
+                            Value = "Открыта"},
+                        new SelectListItem() {Text = "Решена",
+                            Value = "Решена"}
+                    })
+                </p>
+            }
+
+            @if (@Model.Status.Equals("Решена"))
+            {
+                <p>
+                    @Html.DropDownListFor(x => x.Status, new[] {
+                        new SelectListItem() {Text = "Решена",
+                            Value = "Решена"},
+                        new SelectListItem() {Text = "Возврат",
+                            Value = "Возврат"},
+                        new SelectListItem() {Text = "Закрыта",
+                            Value = "Закрыта"}
+                    })
+                </p>
+            }
+
+            @if (@Model.Status.Equals("Возврат"))
+            {
+                <p>
+                    @Html.DropDownListFor(x => x.Status, new[] {
+                        new SelectListItem() {Text = "Возврат",
+                            Value = "Возврат"},
+                        new SelectListItem() {Text = "Решена",
+                            Value = "Решена"}
+                    })
+                </p>
+            }
+
+            @if (@Model.Status.Equals("Закрыта"))
+            {
+                <p>
+                    @Html.DropDownListFor(x => x.Status, new[] {
+                        new SelectListItem() {Text = "Закрыта",
+                            Value = "Закрыта"}
+                    })
+                </p>
+            }
+        </div>
+
+        <div class="button">
+            <a href="../Register/ShowDataBaseForUser.cshtml"><button>Принять</button></a>
+        </div>
+    </div>
+}

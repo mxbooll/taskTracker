@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="TaskTrDBModelStoreContainer" CdmEntityContainer="TaskTrDBEntities">
+    <EntitySetMapping Name="HistoryTable">
+      <EntityTypeMapping TypeName="TaskTrDBModel.HistoryTable">
+        <MappingFragment StoreEntitySet="HistoryTable">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Story_id" ColumnName="Story_id" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Time_enter" ColumnName="Time_enter" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StoryTable">
+      <EntityTypeMapping TypeName="TaskTrDBModel.StoryTable">
+        <MappingFragment StoreEntitySet="StoryTable">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Story" ColumnName="Story" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Time_enter" ColumnName="Time_enter" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
