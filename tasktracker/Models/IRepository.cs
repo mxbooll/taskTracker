@@ -17,5 +17,7 @@ namespace tasktracker.Models
         void Update(HistoryTable historyTable);
         void Update(int id);
         IEnumerable<StoryTable> GetStory(string stat);
+        ICollection<ShowDataBaseForHistoryModel> GetHistoryModel();
+
     }
 }

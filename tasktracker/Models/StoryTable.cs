@@ -7,12 +7,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace tasktracker.Models
 {
-    using System;
-    using System.Collections.Generic;
-    
-    public partial class StoryTable
+    [ExcludeFromCodeCoverage]
+    public partial class StoryTable : IStoryTable
     {
         public int ID { get; set; }
         public string Story { get; set; }

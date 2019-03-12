@@ -7,11 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace tasktracker.Models
 {
-    using System;
-    using System.Collections.Generic;
-    
+    [ExcludeFromCodeCoverage]
     public partial class HistoryTable
     {
         public int ID { get; set; }

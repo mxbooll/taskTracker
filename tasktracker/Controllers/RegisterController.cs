@@ -1,108 +1,135 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.UI.WebControls.Expressions;
+using tasktracker.Models;
 
-namespace tasktracker.Models
+namespace tasktracker.Controllers
 {
     public class RegisterController : Controller
     {
 
-        TaskTrDBEntities db = new TaskTrDBEntities();
+        protected virtual IRepository _db { get; } = new SQLDataBaseRepository();
+
+        public RegisterController()
+        {
+            _db = new SQLDataBaseRepository();
+        }
+
+        public RegisterController(IRepository db)
+        {
+            _db = db;
+        }
+
+        /// <summary>
+        /// Вывести таблицу с заявками
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ShowDataBaseForUser()
+        {
+            return View(_db.GetDataBaseListStory().ToList());
+        }
 
         public ActionResult SetDataInDatabase()
         {
             return View();
         }
 
+        /// <summary>
+        /// Подача новой заявки
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult SetDataInDatabase(StoryTable model)
         {
-            DateTime tm = DateTime.Now;
-            string statusDefault = "Открыта";
-
-            StoryTable tb1 = new StoryTable();
-            tb1.Status = statusDefault;
-            tb1.Story = model.Story;
-            tb1.Time_enter = tm;
-            db.StoryTable.Add(tb1);
-            db.SaveChanges();
-            return RedirectToAction("ShowDataBaseForUser");
-
-            //return View();
-        }
-
-        public ActionResult ShowDataBaseForUser()
-        {
-            var item = db.StoryTable.ToList();
-            return View(item);
-        }
-
-        public ActionResult ShowDataBaseForHistory()
-        {
-            var result =
-                (from F in db.StoryTable
-                 join FT in db.HistoryTable on F.ID equals FT.Story_id
-                 //where (il.ProdId == p.Id) && (il.IngId == ing.Id)
-                 select new ShowDataBaseForHistoryModel { Story = F.Story, Status = FT.Status, Time = FT.Time_enter, Comment = FT.Comment }).ToList();
-            return View(result);
-        }
-
-        public ActionResult Sort(string stat)
-        {
-            if (stat == "All")
+            if (ModelState.IsValid)
             {
-                var item2 = db.StoryTable.ToList();
-                return View("ShowDataBaseForUser", item2);
+                _db.Create(model);
+                return RedirectToAction("ShowDataBaseForUser");
             }
-            var item = db.StoryTable.Where(x => x.Status == stat).ToList();
-            return View("ShowDataBaseForUser", item);
+            return View();
         }
-
-        [HttpGet]
-        public ActionResult SortDate(string dateBegin, string dateEnd)
-        {
-            DateTime dBegin = DateTime.ParseExact(dateBegin, "yyyyMdd", null);
-            DateTime dEnd = DateTime.ParseExact(dateEnd, "yyyyMdd", null);
-
-            var item = db.StoryTable.Where(x => x.Time_enter > dBegin && x.Time_enter < dEnd).ToList();
-            return View("ShowDataBaseForUser", item);
-        }
-
-        public ActionResult Delete(int id)
-        {
-            var item = db.StoryTable.Where(x => x.ID == id).First();
-            db.StoryTable.Remove(item);
-            db.SaveChanges();
-            var item2 = db.StoryTable.ToList();
-            return View("ShowDataBaseForUser", item2);
-        }
-
 
         public ActionResult Edit(int id)
         {
-            var item = db.StoryTable.Where(x => x.ID == id).First();
-
-            return View(item);
+            StoryTable storyTable = _db.GetStoryTable(id);
+            return View(storyTable);
         }
 
+        /// <summary>
+        /// Внесения изменений в статус заявки
+        /// </summary>
+        /// <param name="historyTable"></param>
+        /// <returns></returns>
         [HttpPost]
-        public ActionResult Edit(HistoryTable model)
+        public ActionResult Edit(HistoryTable historyTable)
         {
-            DateTime tm = DateTime.Now;
+            if (ModelState.IsValid && historyTable != null)
+            //if (ModelState.IsValid)
+            {
+                _db.Create(historyTable);
+                return RedirectToAction("ShowDataBaseForUser");
+            }
+            return View();
+        }
 
-            HistoryTable tb1 = new HistoryTable();
-            tb1.Status = model.Status;
-            tb1.Story_id = model.ID;
-            tb1.Time_enter = tm;
-            tb1.Comment = model.Comment;
-            db.HistoryTable.Add(tb1);
-            db.SaveChanges();
-
-            var item = db.StoryTable.Where(x => x.ID == model.ID).First();
-            item.Status = model.Status;
-            db.SaveChanges();
+        /// <summary>
+        /// Удаление заявки
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult Delete(int id)
+        {
+            _db.Delete(id);
             return RedirectToAction("ShowDataBaseForUser");
+        }
+
+        /// <summary>
+        /// Вывод таблицы с историей изменений
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ShowDataBaseForHistory()
+        {
+            var result = _db.GetHistoryModel();
+            return View(result);
+        }
+
+        /// <summary>
+        /// Сортировка по статусу
+        /// </summary>
+        /// <param name="stat"></param>
+        /// <returns></returns>
+        public ActionResult Sort(string stat)
+        {
+            var item = _db.GetStory(stat);
+            return View("ShowDataBaseForUser", item);
+        }
+
+        /// <summary>
+        /// Сортировка по дате от самой ранней до последней
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult SortDateUp()
+        {
+            var result = _db.GetDataBaseListStory()
+                .OrderBy(x => x.Time_enter)
+                .ToList();
+            return View("ShowDataBaseForUser", result);
+        }
+
+        /// <summary>
+        /// Сортировка по дате от последней до самой ранней
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult SortDateDown()
+        {
+            var result = _db.GetDataBaseListStory()
+                .OrderByDescending(x => x.Time_enter)
+                .ToList();
+            return View("ShowDataBaseForUser", result);
         }
     }
 }

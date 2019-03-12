@@ -78,11 +78,11 @@ namespace Tests
         {
             //arrange
             var controller = new RegisterController(ClassStub);
-            int id = 1;
+            //int id = 1;
             //act
             var result = controller.Edit(null);
             //assert
-            Assert.That(result, Is.TypeOf(typeof(ViewResult)));
+            Assert.That(result, Is.TypeOf(typeof(RedirectToRouteResult)));
         }
 
         /// <summary>

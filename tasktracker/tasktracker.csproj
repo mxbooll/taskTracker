@@ -120,7 +120,7 @@
     <Content Include="Web.config" />
     <Content Include="Views\Register\ShowDataBaseForUser.cshtml" />
     <Content Include="Views\Register\ShowDataBaseForHistory.cshtml" />
-    <Content Include="Views\Register\Edit.cshtml" />
+    <Content Include="Views\Register\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -131,6 +131,8 @@
     <Compile Include="Models\HistoryTable.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\IRepository.cs" />
+    <Compile Include="Models\IStoryTable.cs" />
     <Compile Include="Models\Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -147,6 +149,7 @@
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\ShowDataBaseForHistoryModel.cs" />
+    <Compile Include="Models\SQLDataBaseRepository.cs" />
     <Compile Include="Models\StoryTable.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -169,6 +172,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Register\SetDataInDatabase.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Register\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

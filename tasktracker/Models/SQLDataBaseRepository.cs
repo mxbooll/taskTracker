@@ -7,11 +7,33 @@ namespace tasktracker.Models
 {
     public class SQLDataBaseRepository : IRepository
     {
+        //protected virtual TaskTrDBEntitiesContext GetDb() => new TaskTrDBEntitiesContext();
+
         private TaskTrDBEntitiesContext db;
 
         public SQLDataBaseRepository()
         {
             this.db = new TaskTrDBEntitiesContext();
+        }
+
+        public ICollection<ShowDataBaseForHistoryModel> GetHistoryModel()
+        {
+            //using (var db = GetDb())
+            {
+                var result = (
+                    from F in db.StoryTables
+                    join FT in db.HistoryTables on F.ID equals FT.Story_id
+                    select new ShowDataBaseForHistoryModel
+                    {
+                        Story = F.Story,
+                        Status = FT.Status,
+                        Time = FT.Time_enter,
+                        Comment =
+                        FT.Comment
+                    })
+                        .ToList();
+                return result;
+            }
         }
 
         public IEnumerable<HistoryTable> GetDataBaseListHistory()

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace tasktracker.Models
 {
+    [ExcludeFromCodeCoverage]
     public class ShowDataBaseForHistoryModel
     {
         public string Story { get; set; }

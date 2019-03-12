@@ -9,13 +9,12 @@
 
 namespace tasktracker.Models
 {
-    using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    
-    public partial class TaskTrDBEntities : DbContext
+
+    public partial class TaskTrDBEntitiesContext : DbContext
     {
-        public TaskTrDBEntities()
+        public TaskTrDBEntitiesContext()
             : base("name=TaskTrDBEntities")
         {
         }
@@ -25,7 +24,7 @@ namespace tasktracker.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<HistoryTable> HistoryTable { get; set; }
-        public virtual DbSet<StoryTable> StoryTable { get; set; }
+        public virtual DbSet<HistoryTable> HistoryTables { get; set; }
+        public virtual DbSet<StoryTable> StoryTables { get; set; }
     }
 }
