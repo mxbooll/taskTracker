@@ -44,7 +44,7 @@ namespace tasktracker.Controllers
         [HttpPost]
         public ActionResult SetDataInDatabase(StoryTable model)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && model != null)
             {
                 _db.Create(model);
                 return RedirectToAction("ShowDataBaseForUser");

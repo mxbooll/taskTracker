@@ -19,144 +19,69 @@ namespace Tests
 
         protected override IRepository _db => ClassStub;
 
-        [SetUp]
-        public void SetUp()
-        {
-        }
-
         /// <summary>
-        /// Проверка, что метод ShowDataBaseForUser() возвращает тип ViewResult 
+        /// Проверка, что метод SetDataInDatabase() возвращает тип RedirectToRouteResult
         /// </summary>
         [Test]
-        public void ShowDataBaseForUser_Call_ShouldReturnView()
+        public void SetDataInDatabase_Call_ShouldReturnRedirectToRouteResult()
         {
             //arrange
+            StoryTable storyTable = new StoryTable();
             var controller = new RegisterController(ClassStub);
             //act
-            var result = controller.ShowDataBaseForUser();
+            var result = controller.SetDataInDatabase(storyTable);
             //assert
-            Assert.That(result, Is.TypeOf(typeof(ViewResult)));
-        }
-
-        /// <summary>
-        /// Проверка, что метод SetDataInDatabase() возвращает тип ViewResult
-        /// </summary>
-        [Test]
-        public void SetDataInDatabase_Call_ShouldReturnView()
-        {
-            //arrange
-            var controller = new RegisterController(ClassStub);
-            //act
-            var result = controller.SetDataInDatabase();
-            //assert
-            Assert.That(result, Is.TypeOf(typeof(ViewResult)));
+            Assert.That(result, Is.TypeOf(typeof(RedirectToRouteResult)));
             Assert.IsNotNull(result);
 
         }
 
         /// <summary>
-        /// Проверка, что метод Edit() возвращает тип ViewResult
+        /// Проверка, что метод SetDataInDatabase(StoryTable storyTable) с параметром null возвращает тип ViewResult
         /// </summary>
         [Test]
-        public void Edit_Call_ShouldReturnView()
+        public void SetDataInDatabase_Return_ShouldReturnView()
         {
             //arrange
+            StoryTable storyTable = null;
             var controller = new RegisterController(ClassStub);
-            int id = 1;
             //act
-            var result = controller.Edit(id);
+            var result = controller.SetDataInDatabase(storyTable);
             //assert
             Assert.That(result, Is.TypeOf(typeof(ViewResult)));
+
         }
 
-
         /// <summary>
-        /// Проверка, что метод Edit() возвращает тип ViewResult
+        /// Проверка, что метод Edit(HistoryTable historyTable) с параметром null возвращает тип ViewResult
         /// </summary>
         [Test]
         public void Edit_NullModel_ShouldReturnView()
         {
             //arrange
+            HistoryTable historyTable = null;
             var controller = new RegisterController(ClassStub);
             //int id = 1;
             //act
-            var result = controller.Edit(null);
+            var result = controller.Edit(historyTable);
             //assert
-            Assert.That(result, Is.TypeOf(typeof(RedirectToRouteResult)));
+            Assert.That(result, Is.TypeOf(typeof(ViewResult)));
         }
 
         /// <summary>
-        /// Проверка, что метод Edit() возвращает тип ViewResult
+        /// Проверка, что метод Edit(HistoryTable historyTable) возвращает тип RedirectToRouteResult
         /// </summary>
         [Test]
         public void Edit_Model_ShouldReturnView()
         {
             //arrange
             var controller = new RegisterController(ClassStub);
-            int id = 1;
-            var model = new HistoryTable();
+            var historyTable = new HistoryTable();
             //act
-            var result = controller.Edit(model) as RedirectToRouteResult;
+            var result = controller.Edit(historyTable) as RedirectToRouteResult;
             //assert
             Assert.That(result, Is.TypeOf(typeof(RedirectToRouteResult)));
             Assert.IsNotNull(result);
-        }
-
-        /// <summary>
-        /// Проверка, что метод ShowDataBaseForHistory() возвращает тип ViewResult
-        /// </summary>
-        [Test]
-        public void ShowDataBaseForHistory_Call_ShouldReturnView()
-        {
-            //arrange
-            var controller = new RegisterController(ClassStub);
-            //act
-            var result = controller.ShowDataBaseForHistory();
-            //assert
-            Assert.That(result, Is.TypeOf(typeof(ViewResult)));
-        }
-
-        /// <summary>
-        /// Проверка, что метод Sort() возвращает тип ViewResult
-        /// </summary>
-        [Test]
-        public void Sort_Call_ShouldReturnView()
-        {
-            //arrange
-            var controller = new RegisterController(ClassStub);
-            string stat = "";
-            //act
-            var result = controller.Sort(stat);
-            //assert
-            Assert.That(result, Is.TypeOf(typeof(ViewResult)));
-        }
-
-        /// <summary>
-        /// Проверка, что метод SortDateUp() возвращает тип ViewResult 
-        /// </summary>
-        [Test]
-        public void SortDateUp_Call_ShouldReturnView()
-        {
-            //arrange
-            var controller = new RegisterController(ClassStub);
-            //act
-            var result = controller.SortDateUp();
-            //assert
-            Assert.That(result, Is.TypeOf(typeof(ViewResult)));
-        }
-
-        /// <summary>
-        /// Проверка, что метод SortDateDown() возвращает тип ViewResult
-        /// </summary>
-        [Test]
-        public void SortDateDown_Call_ShouldReturnView()
-        {
-            //arrange
-            var controller = new RegisterController(ClassStub);
-            //act
-            var result = controller.SortDateDown();
-            //assert
-            Assert.That(result, Is.TypeOf(typeof(ViewResult)));
         }
 
         /// <summary>
@@ -256,24 +181,6 @@ namespace Tests
             analyzer.ClassStub
                 .Received(1)
                 .GetHistoryModel();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [Test]
-        //[Ignore("Тест не доделан")]
-        public void GetStoryTable_ReturnParameters()
-        {
-            StoryTable storyTable = new StoryTable { ID = 1, Status = "Открыта", Story = "Первая заявка", Time_enter = new DateTime(2019, 03, 11, 08, 24, 30, 750) };
-            ClassStub.Create(storyTable);
-            StoryTable storyTable2 = new StoryTable { ID = 2, Status = "Решена", Story = "Вторая заявка", Time_enter = new DateTime(2019, 03, 12, 08, 24, 30, 750) };
-            ClassStub.Create(storyTable2);
-            StoryTable storyTable3 = new StoryTable { ID = 3, Status = "Возврат", Story = "Третья заявка", Time_enter = new DateTime(2019, 03, 13, 08, 24, 30, 750) };
-            ClassStub.Create(storyTable3);
-
-            ClassStub.GetStoryTable(1).Returns(storyTable);
-
         }
     }
 }
